@@ -161,7 +161,7 @@ export default function Home() {
                     </span>
                   </div>
                 ))}
-                <p className="mt-4 pt-2 text-[10px] normal-case opacity-70">
+                <p className="mt-4 pt-2 text-[13px] normal-case opacity-70">
                   Exemple illustratif du suivi fourni à chaque client.
                 </p>
               </div>

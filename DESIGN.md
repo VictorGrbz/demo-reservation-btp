@@ -41,6 +41,18 @@ typography:
     fontWeight: 500
     lineHeight: 1.4
     letterSpacing: "0.12em"
+  label-micro:
+    fontFamily: "IBM Plex Mono, monospace"
+    fontSize: "10px"
+    fontWeight: 500
+    lineHeight: 1.4
+    letterSpacing: "0.14em"
+  caption:
+    fontFamily: "IBM Plex Sans, Arial, Helvetica, sans-serif"
+    fontSize: "13px"
+    fontWeight: 400
+    lineHeight: 1.5
+    letterSpacing: "normal"
 rounded:
   none: "0px"
 spacing:
@@ -114,7 +126,9 @@ Near-monochrome paper/ink base with a single reserved accent color; warmth and c
 - **Headline** (500, `clamp(1.75rem, 4vw, 2.75rem)` down to `text-2xl`/`text-3xl` responsive, line-height 1.2–1.35): the Méthode and closing-CTA section headings.
 - **Title** (500, 1.25rem/20px): recurring content-block headings, e.g. each Prestations service title.
 - **Body** (400, 15px, line-height 1.625, `--ink-soft`): all paragraph copy; kept short-measure (max-w-lg/max-w-md/max-w-2xl containers, never full-width).
-- **Label** (500, 11px, tracking 0.12em, uppercase, mono, `--ink-soft` or `--paper`-on-dark): every button, nav token, footer line, and project meta line. A smaller 10px/0.14em variant is used only by the `PlateMark` registration tag.
+- **Label** (500, 11px, tracking 0.12em, uppercase, mono, `--ink-soft` or `--paper`-on-dark): every button, nav token, footer line, and project meta line.
+- **Label Micro** (500, 10px, tracking 0.14em, uppercase, mono, `--ink-soft/80`): used only by the `PlateMark` registration tag — a step down from Label for the smallest, most incidental system mark.
+- **Caption** (400, 13px, line-height 1.5, normal case, grotesque, `--ink-soft`): fine-print disclaimers set in reading prose rather than system chrome — e.g. the Méthode tracker's "Exemple illustratif…" note and the Réalisations gallery's "Schémas illustratifs…" note. Always normal-case grotesque, never mono — Caption reads as content, not UI.
 
 ### Named Rules
 **The Mono-Is-System Rule.** IBM Plex Mono, tracked and uppercase, is reserved for system/UI chrome — buttons, nav tokens, plate labels, footer, the seal's circular legend. It never appears as reading content. The grotesque (IBM Plex Sans) never appears tracked or uppercase at label sizes; the two type roles are not interchangeable.
