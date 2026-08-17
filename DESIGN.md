@@ -53,6 +53,12 @@ typography:
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: "normal"
+  data:
+    fontFamily: "IBM Plex Mono, monospace"
+    fontSize: "13px"
+    fontWeight: 500
+    lineHeight: 1
+    letterSpacing: "0.04em"
 rounded:
   none: "0px"
 spacing:
@@ -109,6 +115,9 @@ Near-monochrome paper/ink base with a single reserved accent color; warmth and c
 - **Ink Soft** (`#4a4d52`, `--ink-soft`): body copy and secondary text.
 - **Hairline** (`#c9c7c4`, `--hairline`): all thin rules — section borders, card borders, the dot-matrix grain, scrollbar thumb, the 12-column grid lines (rendered at 6% opacity via `--color-ink` in `ColumnGrid`, not via this token directly).
 
+### Utility
+- **Error Red** (Tailwind `red-700`): the one deliberate exception to the near-monochrome-plus-accent palette, used only for form validation error text in `BookingCalendar`. Never used decoratively.
+
 ### Named Rules
 **The One Accent Rule.** `--seal` appears in exactly three places: the rotating seal mark, `::selection`, and ring/stroke details. It is never a text color and never a background fill for content blocks. Where the periwinkle hue needs to read as text, use `--seal-text` instead — the two tokens are deliberately split so accent placement never becomes an accessibility trade-off.
 
@@ -129,6 +138,7 @@ Near-monochrome paper/ink base with a single reserved accent color; warmth and c
 - **Label** (500, 11px, tracking 0.12em, uppercase, mono, `--ink-soft` or `--paper`-on-dark): every button, nav token, footer line, and project meta line.
 - **Label Micro** (500, 10px, tracking 0.14em, uppercase, mono, `--ink-soft/80`): used only by the `PlateMark` registration tag — a step down from Label for the smallest, most incidental system mark.
 - **Caption** (400, 13px, line-height 1.5, normal case, grotesque, `--ink-soft`): fine-print disclaimers set in reading prose rather than system chrome — e.g. the Méthode tracker's "Exemple illustratif…" note and the Réalisations gallery's "Schémas illustratifs…" note. Always normal-case grotesque, never mono — Caption reads as content, not UI.
+- **Data** (500, 13px, tracking 0.04em, mono, `--ink`): short tabular/numeric UI content — the `BookingCalendar`'s day-of-month digits and time-slot buttons ("09:00"). Lighter tracking than Label since it sets digits, not tracked words, but stays mono per the Mono-Is-System Rule since it's still UI chrome, not reading content.
 
 ### Named Rules
 **The Mono-Is-System Rule.** IBM Plex Mono, tracked and uppercase, is reserved for system/UI chrome — buttons, nav tokens, plate labels, footer, the seal's circular legend. It never appears as reading content. The grotesque (IBM Plex Sans) never appears tracked or uppercase at label sizes; the two type roles are not interchangeable.
@@ -177,6 +187,12 @@ A rotating (25s linear, `prefers-reduced-motion`-respecting) circular stamp: an 
 ### Crosshair (signature component)
 A small circle-plus-crosshair mark (registration/measurement glyph), used standalone at section corners on the hero and inside `PlateMark`. `--ink-soft` stroke, 1px.
 
+### BookingCalendar (signature component)
+A two-column booking flow (`react-day-picker` + a form) styled entirely in-system: square day cells, hairline borders, mono `Data`-step digits, `--ink`-filled selected day, `--seal-text` for today's marker, disabled/outside days at `--ink-soft/30`. Time slots render as a 2-column grid of `Data`-styled toggle buttons beneath the calendar once a date is picked. Form fields use the Label typography for their caption above a hairline-bordered input; validation errors render in a red not otherwise present in the palette (the one deliberate exception to the accent discipline, reserved for error states only). On submit, the form is replaced by a plate-style confirmation card, never a modal or toast.
+
+### Form Field (pattern)
+`<label>` in Label typography (11px mono, tracked, uppercase, `--ink-soft`) directly above a full-width `border-hairline` input/textarea (`--paper` background, `--ink` text, 15px). No floating labels, no rounded corners, focus uses the site-wide `:focus-visible` treatment.
+
 ### FloorPlanIcon (signature component)
 Abstract line-drawing floor-plan glyphs (three variants: extension, intérieur, combles) with a dashed dimension line beneath, `--ink-soft` stroke, no fill. Used in place of project photography in the réalisations gallery — a deliberate stand-in given no real project photos exist, kept abstract/technical rather than simulating fake photography.
 
@@ -188,6 +204,7 @@ Abstract line-drawing floor-plan glyphs (three variants: extension, intérieur, 
 - **Do** keep every UI/system label in mono, tracked, uppercase (11px/0.12em is the default; 10px/0.14em only for the `PlateMark` tag), and keep the grotesque reserved for reading content.
 - **Do** apply the `.dot-matrix` texture sparingly — hero and closing-CTA sections only — as a blueprint-surface cue, not as generic section filler.
 - **Do** keep the seal mark visibly scaled at every breakpoint (it shrinks, it never disappears on mobile).
+- **Do** use `Data` typography (13px mono, tracking 0.04em) for short numeric/time UI content (calendar digits, time slots) instead of inventing a new one-off size.
 
 ### Don't:
 - **Don't** use any `box-shadow` — the system is flat by construction; a shadow breaks the print/plate metaphor.

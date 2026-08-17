@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-17T13:20:46Z",
+  "generatedAt": "2026-08-17T14:05:00Z",
   "title": "Design System: Épure",
   "extensions": {
     "colorMeta": {
@@ -18,7 +18,10 @@
       "headline": { "displayName": "Headline", "purpose": "Méthode and closing-CTA section headings." },
       "title": { "displayName": "Title", "purpose": "Recurring content-block headings (e.g. service titles)." },
       "body": { "displayName": "Body", "purpose": "All paragraph copy, ink-soft, short measure." },
-      "label": { "displayName": "Label", "purpose": "Mono, tracked, uppercase system/UI strings: buttons, nav tokens, plate marks, footer." }
+      "label": { "displayName": "Label", "purpose": "Mono, tracked, uppercase system/UI strings: buttons, nav tokens, plate marks, footer." },
+      "label-micro": { "displayName": "Label Micro", "purpose": "10px mono variant used only by the PlateMark registration tag." },
+      "caption": { "displayName": "Caption", "purpose": "13px normal-case grotesque fine print, e.g. gallery/tracker disclaimers." },
+      "data": { "displayName": "Data", "purpose": "13px mono tabular/numeric UI content: calendar digits, time-slot buttons." }
     },
     "shadows": [],
     "motion": [
@@ -72,6 +75,14 @@
       "css": ".ds-project-card__figure { border: 1px solid #c9c7c4; background: rgba(250,246,245,0.6); padding: 24px; color: #4a4d52; } .ds-project-card h3 { margin-top: 16px; font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-weight: 500; color: #16181a; } .ds-project-card p { margin-top: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #4a4d52; }"
     },
     {
+      "name": "BookingCalendar",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Two-column booking flow: react-day-picker styled in-system (square cells, hairline borders, mono Data-step digits) plus a form (Label-typography captions over hairline inputs). Submitting swaps the form for a plate-style confirmation card.",
+      "html": "<div class=\"ds-booking\"><div class=\"ds-booking__calendar\"><!-- react-day-picker, classNames-themed --></div><form class=\"ds-booking__form\"><label>Nom</label><input type=\"text\" name=\"nom\"/></form></div>",
+      "css": ".ds-booking { display: grid; gap: 40px; } @media (min-width: 768px) { .ds-booking { grid-template-columns: 1fr 1fr; } } .ds-booking__calendar { border: 1px solid #c9c7c4; background: #f5f4f6; padding: 24px; } .ds-booking label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #4a4d52; } .ds-booking input, .ds-booking textarea { margin-top: 8px; width: 100%; border: 1px solid #c9c7c4; background: #f5f4f6; padding: 8px 12px; font-family: 'IBM Plex Sans', sans-serif; font-size: 15px; color: #16181a; }"
+    },
+    {
       "name": "TokenBar",
       "kind": "nav",
       "refersTo": null,
@@ -101,7 +112,8 @@
       "Do number and tag every major section with a PlateMark (Pl. 0X — Label) so the plate metaphor stays legible page to page.",
       "Do keep every UI/system label in mono, tracked, uppercase (11px/0.12em is the default; 10px/0.14em only for the PlateMark tag), and keep the grotesque reserved for reading content.",
       "Do apply the .dot-matrix texture sparingly — hero and closing-CTA sections only — as a blueprint-surface cue, not as generic section filler.",
-      "Do keep the seal mark visibly scaled at every breakpoint (it shrinks, it never disappears on mobile)."
+      "Do keep the seal mark visibly scaled at every breakpoint (it shrinks, it never disappears on mobile).",
+      "Do use Data typography (13px mono, tracking 0.04em) for short numeric/time UI content (calendar digits, time slots) instead of inventing a new one-off size."
     ],
     "donts": [
       "Don't use any box-shadow — the system is flat by construction; a shadow breaks the print/plate metaphor.",
