@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { insertReservation, SlotTakenError } from "@/db/reservations";
 
 const reservationSchema = z.object({
   nom: z.string().trim().min(2, "Nom trop court."),
@@ -52,14 +53,16 @@ export async function submitReservation(
     return { status: "error", errors };
   }
 
-  // Mode démo : sans DATABASE_URL (Neon) configurée, la demande n'est pas
-  // persistée. Elle est journalisée côté serveur et le visiteur voit quand
-  // même une confirmation. La persistance réelle (et la vérification des
-  // créneaux déjà pris) arrive à l'Étape 6 du projet.
-  if (!process.env.DATABASE_URL) {
-    console.info("[reservation] Nouvelle demande (mode démo, non persistée)", {
-      ...parsed.data,
-    });
+  try {
+    await insertReservation(parsed.data);
+  } catch (error) {
+    if (error instanceof SlotTakenError) {
+      return {
+        status: "error",
+        errors: { slot: "Ce créneau vient d'être réservé, choisissez-en un autre." },
+      };
+    }
+    throw error;
   }
 
   return {

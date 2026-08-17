@@ -1,12 +1,12 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useMemo, useState } from "react";
 import { DayPicker } from "react-day-picker";
 import { fr } from "react-day-picker/locale";
 import "react-day-picker/style.css";
 import { submitReservation, type ReservationState } from "@/app/reservation/actions";
-
-const SLOTS = ["09:00", "11:00", "14:00", "16:00"];
+import { SLOTS, getBookingWindow, toISODate } from "@/lib/booking";
+import type { TakenSlot } from "@/db/reservations";
 
 const dayPickerClassNames = {
   root: "font-sans",
@@ -34,24 +34,9 @@ const dayPickerClassNames = {
   hidden: "invisible",
 };
 
-/**
- * Créneaux indisponibles de démonstration : sans persistance Neon
- * (Étape 6), cette liste illustre le comportement attendu ("un créneau
- * déjà pris n'est plus proposé") sans donnée réelle.
- */
-function getDemoUnavailableDates(): Date[] {
-  const dates: Date[] = [];
-  for (const offset of [4, 9, 15]) {
-    const d = new Date();
-    d.setDate(d.getDate() + offset);
-    dates.push(d);
-  }
-  return dates;
-}
-
 const initialState: ReservationState = { status: "idle" };
 
-export function BookingCalendar() {
+export function BookingCalendar({ takenSlots }: { takenSlots: TakenSlot[] }) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedSlot, setSelectedSlot] = useState<string | undefined>();
   const [state, formAction, pending] = useActionState(
@@ -59,13 +44,28 @@ export function BookingCalendar() {
     initialState,
   );
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const minDate = new Date(today);
-  minDate.setDate(minDate.getDate() + 2);
-  const maxDate = new Date(today);
-  maxDate.setDate(maxDate.getDate() + 45);
-  const unavailable = getDemoUnavailableDates();
+  const { minDate, maxDate } = getBookingWindow();
+
+  const takenByDate = useMemo(() => {
+    const map = new Map<string, Set<string>>();
+    for (const { date, slot } of takenSlots) {
+      if (!map.has(date)) map.set(date, new Set());
+      map.get(date)!.add(slot);
+    }
+    return map;
+  }, [takenSlots]);
+
+  const fullyBookedDates = useMemo(
+    () =>
+      [...takenByDate.entries()]
+        .filter(([, slots]) => SLOTS.every((slot) => slots.has(slot)))
+        .map(([date]) => new Date(`${date}T00:00:00`)),
+    [takenByDate],
+  );
+
+  const slotsForSelectedDate = selectedDate
+    ? (takenByDate.get(toISODate(selectedDate)) ?? new Set<string>())
+    : new Set<string>();
 
   if (state.status === "success" && state.recap) {
     return (
@@ -107,7 +107,7 @@ export function BookingCalendar() {
             { before: minDate },
             { after: maxDate },
             { dayOfWeek: [0, 6] },
-            ...unavailable,
+            ...fullyBookedDates,
           ]}
           classNames={dayPickerClassNames}
         />
@@ -117,20 +117,26 @@ export function BookingCalendar() {
               Créneaux disponibles
             </p>
             <div className="mt-3 grid grid-cols-2 gap-2">
-              {SLOTS.map((slot) => (
-                <button
-                  key={slot}
-                  type="button"
-                  onClick={() => setSelectedSlot(slot)}
-                  className={`border px-4 py-2 font-mono text-[13px] tracking-[0.04em] ${
-                    selectedSlot === slot
-                      ? "border-ink bg-ink text-paper"
-                      : "border-hairline text-ink hover:border-ink"
-                  }`}
-                >
-                  {slot}
-                </button>
-              ))}
+              {SLOTS.map((slot) => {
+                const taken = slotsForSelectedDate.has(slot);
+                return (
+                  <button
+                    key={slot}
+                    type="button"
+                    disabled={taken}
+                    onClick={() => setSelectedSlot(slot)}
+                    className={`border px-4 py-2 font-mono text-[13px] tracking-[0.04em] ${
+                      taken
+                        ? "cursor-not-allowed border-hairline text-ink-soft/30 line-through"
+                        : selectedSlot === slot
+                          ? "border-ink bg-ink text-paper"
+                          : "border-hairline text-ink hover:border-ink"
+                    }`}
+                  >
+                    {slot}
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}
@@ -186,6 +192,10 @@ export function BookingCalendar() {
           )}
         </div>
 
+        {state.errors?.slot && (
+          <p className="text-[13px] text-red-700">{state.errors.slot}</p>
+        )}
+
         {!selectedDate || !selectedSlot ? (
           <p className="font-mono text-[11px] tracking-[0.1em] text-ink-soft uppercase">
             Choisissez une date puis un créneau pour continuer.
@@ -202,13 +212,6 @@ export function BookingCalendar() {
       </form>
     </div>
   );
-}
-
-function toISODate(date: Date) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
 }
 
 function Field({

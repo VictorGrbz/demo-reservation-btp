@@ -1,8 +1,13 @@
 import { TokenBar } from "@/components/token-bar";
 import { PlateMark } from "@/components/plate-mark";
 import { BookingCalendar } from "@/components/booking-calendar";
+import { getTakenSlots } from "@/db/reservations";
+import { getBookingWindow, toISODate } from "@/lib/booking";
 
-export default function ReservationPage() {
+export default async function ReservationPage() {
+  const { minDate, maxDate } = getBookingWindow();
+  const takenSlots = await getTakenSlots(toISODate(minDate), toISODate(maxDate));
+
   return (
     <>
       <TokenBar />
@@ -17,7 +22,7 @@ export default function ReservationPage() {
             projet. Réponse et confirmation sous 48h ouvrées.
           </p>
           <div className="mt-12">
-            <BookingCalendar />
+            <BookingCalendar takenSlots={takenSlots} />
           </div>
         </section>
       </main>

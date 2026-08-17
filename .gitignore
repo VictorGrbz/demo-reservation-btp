@@ -45,3 +45,7 @@ next-env.d.ts
 
 # impeccable (état d'interaction éphémère, pas la source du design)
 .impeccable/questions/
+
+.vercel
+.env*
+!.env.example

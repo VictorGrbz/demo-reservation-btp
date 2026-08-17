@@ -21,6 +21,9 @@ devis ou une visite technique.
 
 ```bash
 npm install
+vercel link      # relie le dossier au projet Vercel (une fois)
+vercel env pull .env.local
+npm run db:migrate  # crée la table `reservations` si besoin
 npm run dev
 ```
 
@@ -28,8 +31,9 @@ Ouvrir [http://localhost:3000](http://localhost:3000).
 
 ## État du projet
 
-Scaffold initial uniquement (Étape 1 de `PLAN.md`). Direction artistique,
-pages fonctionnelles, persistance et déploiement restent à venir — voir
+Direction artistique, page d'accueil et calendrier de réservation (avec
+persistance réelle des créneaux via Neon Postgres) sont en ligne. Galerie
+des chantiers (Cloudflare R2) et déploiement public restent à venir — voir
 `PLAN.md` pour le détail des étapes.
 
 ## Déploiement
