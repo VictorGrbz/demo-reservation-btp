@@ -11,12 +11,12 @@ Projet vitrine 3/6 de la convention définie dans `context/infra.md` (après `de
 - **Repo** : `VictorGrbz/demo-reservation-btp` (à créer, public)
 - **Dossier workspace** : `livrables/sites-web/demo-reservation-btp/`
 - **Déploiement** : Vercel, sous-domaine `reservation.jess-vic.ovh`
-- **Stack validée** : Next.js (App Router) + TypeScript + Tailwind CSS, calendrier de réservation (`react-day-picker`), persistance des créneaux/demandes via Neon Postgres (intégration Vercel, free tier), stockage des photos de chantiers via Cloudflare R2
+- **Stack validée** : Next.js (App Router) + TypeScript + Tailwind CSS, calendrier de réservation (`react-day-picker`), persistance des créneaux/demandes via Neon Postgres (intégration Vercel, free tier). ~~Stockage des photos de chantiers via Cloudflare R2~~ : abandonné (Étape 4), pas d'images pour ce projet test.
 - **Contrainte impérative** : aucun code de production n'est écrit par la session racine (Jarvis). Seul l'Artisan, ouvert directement dans ce dossier, écrit le code.
 
 ---
 
-## Étape 0 — Initialisation du dépôt Git
+## Étape 0 — Initialisation du dépôt Git — ✅ Fait
 
 **Objectif** : créer le dépôt Git dédié à ce projet avant tout code.
 **Fichiers concernés** : ce `PLAN.md` (premier fichier du dépôt).
@@ -27,7 +27,7 @@ Projet vitrine 3/6 de la convention définie dans `context/infra.md` (après `de
 
 ---
 
-## Étape 1 — Initialisation du projet
+## Étape 1 — Initialisation du projet — ✅ Fait
 
 **Objectif** : scaffolder un projet Next.js (App Router) + TypeScript + Tailwind CSS, structure de dossiers de base.
 **Fichiers concernés** : `package.json`, `tsconfig.json`, `next.config.ts`, `eslint.config.mjs`, `postcss.config.mjs`, `src/app/layout.tsx`, `src/app/page.tsx`, `.gitignore`.
@@ -36,7 +36,7 @@ Projet vitrine 3/6 de la convention définie dans `context/infra.md` (après `de
 
 ---
 
-## Étape 2 — Direction artistique (`/impeccable teach`)
+## Étape 2 — Direction artistique (`/impeccable teach`) — ✅ Fait
 
 **Objectif** : obtenir la direction artistique du projet via Impeccable, avant toute mise en forme visuelle.
 **Fichiers concernés** : le prompt de Direction Artistique ci-dessous (rédigé et validé par Victor).
@@ -61,9 +61,11 @@ Projet vitrine 3/6 de la convention définie dans `context/infra.md` (après `de
 
 **Note d'exécution pour l'Artisan** : la demande à Impeccable doit être formulée comme une nouvelle direction visuelle complète (jamais une retouche locale), condition nécessaire au déclenchement de la page de décision interactive. Sans clé `OPENAI_API_KEY` configurée, les cartes affichent uniquement palette de couleurs + description texte (pas de vraie maquette visuelle) : c'est le comportement normal attendu, pas un bug à signaler.
 
+**Résultat** : direction retenue « planche technique d'annuaire de design » (croix de repérage, filets fins, cachet rotatif, grille 12 colonnes), choisie via la page de décision face au tirage assigné « mètre-ruban / niveau à bulle ». Système documenté dans `DESIGN.md` et `.impeccable/design.json`.
+
 ---
 
-## Étape 3 — Page d'accueil et présentation de l'activité
+## Étape 3 — Page d'accueil et présentation de l'activité — ✅ Fait
 
 **Objectif** : présenter l'artisan, ses services et sa zone d'intervention, dans le style livré par l'étape 2.
 **Fichiers concernés** : `src/app/page.tsx`, `src/components/hero.tsx` (ou équivalent).
@@ -72,16 +74,23 @@ Projet vitrine 3/6 de la convention définie dans `context/infra.md` (après `de
 
 ---
 
-## Étape 4 — Galerie des chantiers réalisés
+## Étape 4 — Galerie des chantiers réalisés — ❌ Abandonnée (décision Victor, 2026-08-17)
+
+**Décision** : pas d'images pour ce projet test — pas de bucket Cloudflare R2, pas de route `/realisations` dédiée. La page d'accueil garde son teaser de réalisations en illustrations techniques abstraites (`FloorPlanIcon`, construit à l'Étape 2/3), qui reste en place.
+
+<details>
+<summary>Objectif initial (non réalisé)</summary>
 
 **Objectif** : afficher une galerie de photos de chantiers de démonstration.
 **Fichiers concernés** : `src/app/realisations/page.tsx`, `src/lib/gallery.ts`, configuration du bucket Cloudflare R2 (variables d'environnement d'accès).
 **Destination** : route `/realisations`.
 **Critère de fait** : la galerie s'affiche avec des images chargées depuis Cloudflare R2, responsive mobile/desktop vérifié visuellement.
 
+</details>
+
 ---
 
-## Étape 5 — Calendrier de réservation
+## Étape 5 — Calendrier de réservation — ✅ Fait
 
 **Objectif** : permettre à un visiteur de choisir un créneau disponible pour un devis / une visite technique, via un calendrier (`react-day-picker`) et un formulaire (nom, contact, adresse, description des travaux).
 **Fichiers concernés** : `src/app/reservation/page.tsx`, `src/components/booking-calendar.tsx`.
@@ -90,21 +99,23 @@ Projet vitrine 3/6 de la convention définie dans `context/infra.md` (après `de
 
 ---
 
-## Étape 6 — Persistance des réservations (Neon Postgres)
+## Étape 6 — Persistance des réservations (Neon Postgres) — ✅ Fait
 
 **Objectif** : enregistrer les demandes de réservation en base pour éviter les doublons de créneaux et permettre une page de confirmation.
-**Fichiers concernés** : `src/app/api/reservations/route.ts`, schéma de la table `reservations`, variable d'environnement `DATABASE_URL`.
-**Destination** : base Neon Postgres reliée au projet Vercel.
-**Critère de fait** : une réservation soumise est persistée en base, les créneaux déjà pris ne sont plus proposés au visiteur suivant.
+**Fichiers concernés** : `src/app/reservation/actions.ts` (Server Action, pas de route API séparée), `src/db/{index,reservations}.ts`, `src/db/schema.sql`, `scripts/migrate.mjs`, variable d'environnement `DATABASE_URL`.
+**Destination** : base Neon Postgres reliée au projet Vercel (provisionnée via le marketplace Vercel).
+**Critère de fait** : une réservation soumise est persistée en base (contrainte d'unicité `slot_date`/`slot_time`), les créneaux déjà pris (par créneau, pas par journée) ne sont plus proposés au visiteur suivant — vérifié en local et en production.
 
 ---
 
-## Étape 7 — Déploiement
+## Étape 7 — Déploiement — ✅ Fait
 
 **Objectif** : déployer le site sur Vercel et le rattacher au sous-domaine `reservation.jess-vic.ovh`.
-**Fichiers concernés** : configuration Vercel du projet (variables d'environnement Neon + R2), DNS Cloudflare (nouvel enregistrement `reservation`).
+**Fichiers concernés** : configuration Vercel du projet (variable d'environnement Neon), DNS Cloudflare.
 **Destination** : `https://reservation.jess-vic.ovh`.
 **Critère de fait** : le site est accessible publiquement en HTTPS, parcours de réservation complet fonctionnel en production.
+
+**Résultat** : projet Vercel créé et lié au dépôt GitHub, domaine réclamé côté Vercel. Résolu via le wildcard DNS Cloudflare déjà en place pour `*.jess-vic.ovh` (comme `restaurant.` et `boutique.`) : aucun nouvel enregistrement DNS nécessaire. Homepage et `/reservation` (écriture Neon incluse) vérifiés en production le 2026-08-17. Vercel recommande en option un CNAME dédié (non appliqué, non bloquant).
 
 ---
 
@@ -119,7 +130,7 @@ Projet vitrine 3/6 de la convention définie dans `context/infra.md` (après `de
 
 ## Vérification automatique
 
-- [ ] Configurer un hook `PostToolUse` dans `.claude/settings.json` du dossier `demo-reservation-btp`, déclenché après `Edit`/`Write` sur les fichiers `*.ts`/`*.tsx`, qui lance `npx tsc --noEmit` (contrôle de types) — à mettre en place par l'Artisan avant de commencer l'étape 1, pour détecter les erreurs de type au fil de l'eau plutôt qu'en fin de build.
+- [x] Configurer un hook `PostToolUse` dans `.claude/settings.json` du dossier `demo-reservation-btp`, déclenché après `Edit`/`Write` sur les fichiers `*.ts`/`*.tsx`, qui lance `npx tsc --noEmit` (contrôle de types) — à mettre en place par l'Artisan avant de commencer l'étape 1, pour détecter les erreurs de type au fil de l'eau plutôt qu'en fin de build.
 
 ---
 
