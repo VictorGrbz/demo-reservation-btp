@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-17T13:20:46Z",
+  "title": "Design System: Épure",
+  "extensions": {
+    "colorMeta": {
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "#f5f4f6", "tonalRamp": ["#16181a", "#2b2d30", "#4a4d52", "#8a8c8f", "#c9c7c4", "#e4e2e0", "#f5f4f6", "#faf9fa"] },
+      "paper-warm": { "role": "neutral", "displayName": "Paper Warm", "canonical": "#faf6f5", "tonalRamp": ["#3a2f2c", "#5c4a45", "#8a6f68", "#c4a89f", "#e5d2cc", "#f2e5e1", "#faf6f5", "#fdfbfa"] },
+      "paper-cool": { "role": "neutral", "displayName": "Paper Cool", "canonical": "#eef3ef", "tonalRamp": ["#1c2620", "#2e3f33", "#4d6656", "#8aab97", "#c3d8c9", "#dfe9e0", "#eef3ef", "#f8faf8"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#16181a", "tonalRamp": ["#0a0b0c", "#16181a", "#2b2d30", "#4a4d52", "#8a8c8f", "#c9c7c4", "#e4e2e0", "#f5f4f6"] },
+      "ink-soft": { "role": "neutral", "displayName": "Ink Soft", "canonical": "#4a4d52", "tonalRamp": ["#16181a", "#2b2d30", "#4a4d52", "#63666b", "#8a8c8f", "#b5b6b9", "#d8d9da", "#eeeeef"] },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "#c9c7c4", "tonalRamp": ["#4a4844", "#6e6b66", "#938f89", "#b5b2ac", "#c9c7c4", "#dad8d5", "#e9e8e6", "#f5f4f3"] },
+      "seal": { "role": "primary", "displayName": "Seal Periwinkle", "canonical": "#6b6fd1", "tonalRamp": ["#1f2166", "#2f3299", "#4548b8", "#6b6fd1", "#8f92dd", "#b3b5e9", "#d6d7f4", "#ecedfa"] },
+      "seal-text": { "role": "primary", "displayName": "Seal Text (AA-safe)", "canonical": "#4338ca", "tonalRamp": ["#181350", "#221c7d", "#2f27a3", "#4338ca", "#6a60d6", "#938cde", "#bbb6ea", "#dedcf5"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero H1 only." },
+      "headline": { "displayName": "Headline", "purpose": "Méthode and closing-CTA section headings." },
+      "title": { "displayName": "Title", "purpose": "Recurring content-block headings (e.g. service titles)." },
+      "body": { "displayName": "Body", "purpose": "All paragraph copy, ink-soft, short measure." },
+      "label": { "displayName": "Label", "purpose": "Mono, tracked, uppercase system/UI strings: buttons, nav tokens, plate marks, footer." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "seal-spin", "value": "rotate 360deg over 25s linear infinite (disabled under prefers-reduced-motion)", "purpose": "Rotating text ring on the Seal registration mark." },
+      { "name": "button-lift", "value": "transform: translateY(-2px), 150ms", "purpose": "Hover state on primary/secondary buttons; no shadow or color change accompanies it." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Filled ink button, mono uppercase label, used for the reservation CTA everywhere it appears.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">RÉSERVER UN CRÉNEAU DE DEVIS</a>",
+      "css": ".ds-btn-primary { display: inline-block; background: #16181a; color: #f5f4f6; border: 1px solid #16181a; padding: 12px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: transform 0.15s; } .ds-btn-primary:hover { transform: translateY(-2px); } .ds-btn-primary:focus-visible { outline: 1.5px solid #16181a; outline-offset: 3px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ghost/outline variant, same shape and label typography as primary, transparent fill.",
+      "html": "<a class=\"ds-btn-secondary\" href=\"#\">VOIR LES RÉALISATIONS</a>",
+      "css": ".ds-btn-secondary { display: inline-block; background: transparent; color: #16181a; border: 1px solid #16181a; padding: 12px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: transform 0.15s; } .ds-btn-secondary:hover { transform: translateY(-2px); } .ds-btn-secondary:focus-visible { outline: 1.5px solid #16181a; outline-offset: 3px; }"
+    },
+    {
+      "name": "PlateMark",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Corner-anchored section registration tag: crosshair glyph + 'Pl. 0X — Label', mono, tracked, uppercase. Placed top-6 left-6 on every section; the system's only section-identification device (replaced a removed kicker pattern).",
+      "html": "<div class=\"ds-plate-mark\"><svg class=\"ds-plate-mark__crosshair\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"6.5\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\"/><line x1=\"12\" y1=\"0\" x2=\"12\" y2=\"24\" stroke=\"currentColor\" stroke-width=\"1\"/><line x1=\"0\" y1=\"12\" x2=\"24\" y2=\"12\" stroke=\"currentColor\" stroke-width=\"1\"/></svg><span>Pl. 01 — Présentation</span></div>",
+      "css": ".ds-plate-mark { position: absolute; top: 24px; left: 24px; z-index: 10; display: flex; align-items: center; gap: 8px; color: rgba(74,77,82,0.8); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; } .ds-plate-mark__crosshair { width: 16px; height: 16px; }"
+    },
+    {
+      "name": "Seal",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Rotating circular stamp (25s linear, reduced-motion aware) with a text-on-circular-path outer ring and static wordmark center. Periwinkle. Scales down (not away) on mobile.",
+      "html": "<svg class=\"ds-seal\" viewBox=\"0 0 160 160\" aria-hidden=\"true\"><g class=\"ds-seal__ring\" style=\"transform-origin:80px 80px\"><path id=\"ds-seal-circle\" fill=\"none\" d=\"M 80,15 A 65,65 0 1 1 79.99,15\"/><text fill=\"currentColor\" font-size=\"9.5\" letter-spacing=\"3\" class=\"ds-seal__ringtext\"><textPath href=\"#ds-seal-circle\" startOffset=\"0%\">ÉPURE · RÉNOVATION &amp; EXTENSION · DEVIS VÉRIFIÉ ·</textPath></text></g><circle cx=\"80\" cy=\"80\" r=\"38\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\"/><text x=\"80\" y=\"84\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"11\" letter-spacing=\"1\" class=\"ds-seal__center\">ÉPURE</text></svg>",
+      "css": ".ds-seal { color: #6b6fd1; width: 128px; height: 128px; } .ds-seal__ring { animation: ds-seal-spin 25s linear infinite; } .ds-seal__ringtext, .ds-seal__center { font-family: 'IBM Plex Mono', monospace; text-transform: uppercase; } @keyframes ds-seal-spin { to { transform: rotate(360deg); } } @media (prefers-reduced-motion: reduce) { .ds-seal__ring { animation: none; } }"
+    },
+    {
+      "name": "Project Card",
+      "kind": "card",
+      "refersTo": null,
+      "description": "Réalisations gallery card: abstract FloorPlanIcon in a hairline-bordered warm-paper box, title + mono meta beneath. Stands in for project photography (none available).",
+      "html": "<div class=\"ds-project-card\"><div class=\"ds-project-card__figure\"><svg viewBox=\"0 0 120 100\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\" aria-hidden=\"true\"><rect x=\"10\" y=\"30\" width=\"60\" height=\"60\"/><rect x=\"70\" y=\"55\" width=\"40\" height=\"35\"/><line x1=\"10\" y1=\"60\" x2=\"70\" y2=\"60\"/><line x1=\"40\" y1=\"30\" x2=\"40\" y2=\"60\"/></svg></div><h3>Extension — séjour</h3><p>42 m² · 8 semaines</p></div>",
+      "css": ".ds-project-card__figure { border: 1px solid #c9c7c4; background: rgba(250,246,245,0.6); padding: 24px; color: #4a4d52; } .ds-project-card h3 { margin-top: 16px; font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; font-weight: 500; color: #16181a; } .ds-project-card p { margin-top: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #4a4d52; }"
+    },
+    {
+      "name": "TokenBar",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Sticky header: mono wordmark, mono uppercase metadata tokens (region/service facts, not links), primary CTA button.",
+      "html": "<header class=\"ds-tokenbar\"><a class=\"ds-tokenbar__logo\" href=\"/\">Épure</a><nav class=\"ds-tokenbar__tokens\"><span>RÉNOVATION</span><span>EXTENSION</span><span>HAUTS-DE-FRANCE</span><span>DEVIS SOUS 48H</span></nav><a class=\"ds-btn-primary\" href=\"/reservation\">RÉSERVER UN CRÉNEAU</a></header>",
+      "css": ".ds-tokenbar { position: sticky; top: 0; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 0 24px; border-bottom: 1px solid #c9c7c4; background: rgba(245,244,246,0.95); backdrop-filter: blur(4px); } .ds-tokenbar__logo { font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #16181a; } .ds-tokenbar__tokens { display: flex; gap: 24px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #4a4d52; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Verified Technical Plate",
+    "overview": "Épure reads as a checked architectural plate, not an artisan brochure. Every section is a numbered \"planche\" (plate) bounded by hairline rules, tagged in a corner with a registration mark, and gridded like a drafting sheet. The world's job is to make the visitor feel a devis from Épure gets the same procedural rigor as a plan côté: nothing is eyeballed, everything is dated and versioned. Warmth is not banished but it is never the default move — it comes from precision made legible, not from folklore (no hard hats, no handshakes, no rounded-friendly UI).\n\nThe palette is near-monochrome paper-and-ink with a single reserved accent; the type system pairs one humanist grotesque (content) with one mono (system labels, always tracked uppercase, always small). Depth is flat throughout — no shadows anywhere in the build — with layering done through hairline borders, low-opacity fills, and a 6%-opacity 12-column grid ghosted behind every section.",
+    "keyCharacteristics": [
+      "Near-white paper, near-black ink, one periwinkle accent reserved for non-text uses",
+      "Every section is a bordered, numbered \"planche\" with a corner registration tag",
+      "A ghosted 12-column grid (6% opacity) sits behind every section",
+      "Flat throughout: zero shadows, depth via hairlines and opacity layering",
+      "Mono uppercase, tracked labels for every system/UI string; the grotesque is reserved for reading content"
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "--seal appears in exactly three places: the rotating seal mark, ::selection, and ring/stroke details. It is never a text color and never a background fill for content blocks. Where the periwinkle hue needs to read as text, use --seal-text instead — the two tokens are deliberately split so accent placement never becomes an accessibility trade-off.", "section": "colors" },
+      { "name": "The Warm/Cool Edge Rule", "body": "Paper is not a single flat white. --paper-warm and --paper-cool exist to let alternating sections drift slightly warm or cool at low opacity (60% / 40%), keeping the plate metaphor from feeling sterile without introducing new hues.", "section": "colors" },
+      { "name": "The Mono-Is-System Rule", "body": "IBM Plex Mono, tracked and uppercase, is reserved for system/UI chrome — buttons, nav tokens, plate labels, footer, the seal's circular legend. It never appears as reading content. The grotesque (IBM Plex Sans) never appears tracked or uppercase at label sizes; the two type roles are not interchangeable.", "section": "typography" },
+      { "name": "The No-Shadow Rule", "body": "Nothing in this system casts a shadow. Separation between planes is drawn, never lit — a plate/print metaphor is broken the moment something looks like it's floating above the paper.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do reserve --seal (periwinkle) for the seal mark, ::selection, and ring/stroke details only; use --seal-text wherever the accent hue needs to read as text.",
+      "Do number and tag every major section with a PlateMark (Pl. 0X — Label) so the plate metaphor stays legible page to page.",
+      "Do keep every UI/system label in mono, tracked, uppercase (11px/0.12em is the default; 10px/0.14em only for the PlateMark tag), and keep the grotesque reserved for reading content.",
+      "Do apply the .dot-matrix texture sparingly — hero and closing-CTA sections only — as a blueprint-surface cue, not as generic section filler.",
+      "Do keep the seal mark visibly scaled at every breakpoint (it shrinks, it never disappears on mobile)."
+    ],
+    "donts": [
+      "Don't use any box-shadow — the system is flat by construction; a shadow breaks the print/plate metaphor.",
+      "Don't round any corner — every border in the shipped system is square; the only circular forms are the crosshair and seal registration marks.",
+      "Don't put a kicker/eyebrow label above a heading — the corner-anchored PlateMark is the system's only section-identification device; a floating kicker above content was removed during finish review as a banned pattern and must not be reintroduced.",
+      "Don't number a list decoratively (e.g. \"01–04\" prefixes on unordered content) — numbering is reserved for the section-level PlateMark plates, where it's meaningful (5 real, ordered plates), not applied to arbitrary list items.",
+      "Don't use real or simulated project photography — no real project photos exist for this fictional practice; use abstract line-drawing icons (FloorPlanIcon) or technical schematics instead, never generic stock imagery (smiling hard hat, suited handshake) per PRODUCT.md's evidence-on-hand constraint."
+    ]
+  }
+}
